@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sfps-customer-portal
+    runtime: python
+    plan: starter
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    startCommand: sh start.sh
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sfps-customer-portal-db
+          property: connectionString
+      - key: OMS_ADMIN_KEY
+        generateValue: true
