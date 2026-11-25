@@ -3,6 +3,7 @@ import secrets
 import hmac
 from flask import Flask, request, jsonify
 import psycopg
+from pathlib import Path
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
@@ -16,6 +17,7 @@ def init_db():
             tracking text PRIMARY KEY, access_token text NOT NULL,
             status text NOT NULL, eta date, created_at timestamptz DEFAULT now()
         )""")
+        db.execute(Path(__file__).with_name('schema.sql').read_text())
 
 @app.after_request
 def headers(response):
